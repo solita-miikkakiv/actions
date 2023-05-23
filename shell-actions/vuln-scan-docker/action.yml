@@ -28,11 +28,10 @@ runs:
         /usr/bin/touch report_html.html
         /usr/bin/chmod a+w report_html.html
         docker pull owasp/zap2docker-stable -q
-        docker run -v $(pwd):/zap/wrk/:rw -t ubuntu:20.04 touch /zap/wrk/test.txt
       shell: bash
     - name: Scan with ZAP full scan
       run: | 
-        docker run -v $(pwd):/zap/wrk/:rw --network="host" -t owasp/zap2docker-stable bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall jython; zap.sh -cmd -autorun /zap/wrk/${{ inputs.zap_configfile }}; mv /home/zap/report_html.html /zap/wrk/"
+        docker run -v $(pwd):/zap/wrk/:rw --network="host" -t owasp/zap2docker-stable bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall jython; zap.sh -cmd -autorun /zap/wrk/${{ inputs.zap_configfile }}; chmod a=rw- /zap/wrk/; mv /home/zap/report_html.html /zap/wrk/"
         ls $(pwd)
       shell: bash
       env:
