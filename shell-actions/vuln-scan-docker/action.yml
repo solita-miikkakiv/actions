@@ -31,6 +31,7 @@ runs:
       shell: bash
     - name: Scan with ZAP full scan
       run: docker run -v $(pwd):/zap/wrk/:rw --network="host" -t owasp/zap2docker-stable bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall jython; zap.sh -cmd -autorun /zap/wrk/${{ inputs.zap_configfile }}"
+      shell: bash
       env:
         ZAP_BASE_URL: ${{ inputs.target }}
         ZAP_MS_USER: ${{ inputs.test_user }}
