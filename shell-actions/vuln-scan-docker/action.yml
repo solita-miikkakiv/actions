@@ -42,4 +42,4 @@ runs:
       if: always()
       with:
         name: ${{ inputs.report_artifact }}
-        path: report_report.html
+        path: /home/zap/report_report.html
