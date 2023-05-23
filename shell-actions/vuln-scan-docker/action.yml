@@ -28,6 +28,7 @@ runs:
         /usr/bin/touch report_html.html
         /usr/bin/chmod a+w report_html.html
         docker pull owasp/zap2docker-stable -q
+        docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable touch /zap/wrk/test.txt
       shell: bash
     - name: Scan with ZAP full scan
       run: | 
