@@ -1,0 +1,44 @@
+name: Scan web application for security vulnerabilities
+description: |
+  Scan application for security vulnerabilities with OWASP ZAP Full Scan
+inputs:
+  test_user:
+    description: Set user
+    required: true
+    default: true
+  test_password:
+    description: Set password
+    required: true
+    default: null
+  cmd_options:
+    description: Set additional command line parameters
+    required: false
+  zap_configfile:
+    description: Config for zap to use. Include ajax spider and active scan
+    required: true
+  report_artifact:
+    description: Report artifact name
+    default: vuln-full-scan-report
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Pull ZAP image and make report template
+      run: |
+        /usr/bin/touch report_html.html
+        /usr/bin/chmod a+w report_html.html
+        docker pull owasp/zap2docker-stable -q
+      shell: bash
+    - name: Scan with ZAP full scan
+      run: docker run -v $(pwd):/zap/wrk/:rw --network="host" -t owasp/zap2docker-stable bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall jython; zap.sh -cmd -autorun /zap/wrk/${{ inputs.zap_configfile }}"
+      env:
+        ZAP_BASE_URL: ${{ inputs.target }}
+        ZAP_MS_USER: ${{ inputs.test_user }}
+        ZAP_MS_PASSWD: ${{ inputs.test_password }}
+    
+    - name: Upload full scan results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: ${{ inputs.report_artifact }}
+        path: report_report.html
