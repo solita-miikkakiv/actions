@@ -30,7 +30,10 @@ runs:
         docker pull owasp/zap2docker-stable -q
       shell: bash
     - name: Scan with ZAP full scan
-      run: docker run -v $(pwd):/zap/wrk/:rw --network="host" -t owasp/zap2docker-stable bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall jython; zap.sh -cmd -autorun /zap/wrk/${{ inputs.zap_configfile }}"
+      run: | 
+        docker run -v $(pwd):/zap/wrk/:rw --network="host" -t owasp/zap2docker-stable bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall jython; zap.sh -cmd -autorun /zap/wrk/${{ inputs.zap_configfile }}"
+        ls /home/zap/
+        mv /home/zap/report_html.html $(pwd)
       shell: bash
       env:
         ZAP_BASE_URL: ${{ inputs.target }}
@@ -42,4 +45,4 @@ runs:
       if: always()
       with:
         name: ${{ inputs.report_artifact }}
-        path: /home/zap/report_html.html
+        path: report_html.html
