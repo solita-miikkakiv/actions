@@ -10,6 +10,9 @@ inputs:
     description: Set password
     required: true
     default: null
+  target:
+    description: Target url to scan
+    required: true
   cmd_options:
     description: Set additional command line parameters
     required: false
