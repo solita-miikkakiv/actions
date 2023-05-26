@@ -53,9 +53,9 @@ runs:
         name: ${{ inputs.report_artifact }}
         path: report_html.html
 
-    - name: Upload full scan results
-      uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: json-report
-        path: report_json.json
+    - name: Check if any alerts were risen
+      run: |
+        if jq -e '. | contains(["High", "Medium"])' "report_json.json" >/dev/null; \
+        then echo "The ZAP scan raised alerts. Please check them."; exit 1; \
+        else echo "Good to go!"; exit 0; fi
+
