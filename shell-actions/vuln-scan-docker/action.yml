@@ -28,8 +28,8 @@ runs:
   steps:
     - name: Pull ZAP image and make report template
       run: |
-        /usr/bin/touch report_html.html
-        /usr/bin/chmod a+w report_html.html
+        /usr/bin/touch report_html.html report_json.json
+        /usr/bin/chmod a+w report_html.html report_json.json
         docker pull owasp/zap2docker-stable -q
       shell: bash
     - name: Scan with ZAP full scan
@@ -38,6 +38,7 @@ runs:
         "zap.sh -cmd -addonupdate; \
         zap.sh -cmd -addoninstallall; \
         zap.sh -cmd -autorun /zap/wrk/${{ inputs.zap_configfile }} ${{ inputs.cmd_options }}; \
+        cp /home/zap/report_json.json /zap/wrk/
         cp /home/zap/report_html.html /zap/wrk/"
       shell: bash
       env:
@@ -51,3 +52,10 @@ runs:
       with:
         name: ${{ inputs.report_artifact }}
         path: report_html.html
+
+    - name: Upload full scan results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: json-report
+        path: report_json.json
