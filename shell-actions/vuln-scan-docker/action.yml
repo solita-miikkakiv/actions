@@ -58,4 +58,5 @@ runs:
         if jq -e '. | contains(["High", "Medium"])' "report_json.json" >/dev/null; \
         then echo "The ZAP scan raised alerts. Please check them."; exit 1; \
         else echo "Good to go!"; exit 0; fi
+      shell: bash
 
