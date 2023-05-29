@@ -56,7 +56,7 @@ runs:
         path: report_html.html
 
     - name: Check if any alerts were risen
-      if: ${{ inputs.fail_on_alert }}
+      if: ${{ inputs.fail_on_alert }} == true
       run: |
         if jq -e '.site[].alerts[] | select(.riskcode | contains("3") or contains("2"))' "report_json.json" >/dev/null; \
         then echo "The ZAP scan raised alerts. Please check them."; exit 1; \
