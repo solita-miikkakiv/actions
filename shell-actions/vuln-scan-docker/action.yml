@@ -23,6 +23,9 @@ inputs:
     description: Report artifact name
     default: vuln-full-scan-report
     required: false
+  fail_on_alert:
+    default: true
+    required: false
 runs:
   using: composite
   steps:
@@ -38,8 +41,7 @@ runs:
         "zap.sh -cmd -addonupdate; \
         zap.sh -cmd -addoninstallall; \
         zap.sh -cmd -autorun /zap/wrk/${{ inputs.zap_configfile }} ${{ inputs.cmd_options }}; \
-        cp /home/zap/report_json.json /zap/wrk/
-        cp /home/zap/report_html.html /zap/wrk/"
+        cp /home/zap/report_html.html /home/zap/report_json.json /zap/wrk/"
       shell: bash
       env:
         ZAP_BASE_URL: ${{ inputs.target }}
@@ -54,6 +56,7 @@ runs:
         path: report_html.html
 
     - name: Check if any alerts were risen
+      if: ${{ inputs.fail_on_alert }}
       run: |
         if jq -e '.site[].alerts[] | select(.riskcode | contains("3") or contains("2"))' "report_json.json" >/dev/null; \
         then echo "The ZAP scan raised alerts. Please check them."; exit 1; \
