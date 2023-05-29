@@ -55,7 +55,7 @@ runs:
 
     - name: Check if any alerts were risen
       run: |
-        if jq -e '.site.alerts[] | select(.riskCode | contains("3") or contains("2"))' "report_json.json" >/dev/null; \
+        if jq -e '.site[].alerts[] | select(.riskcode | contains("3") or contains("2"))' "report_json.json" >/dev/null; \
         then echo "The ZAP scan raised alerts. Please check them."; exit 1; \
         else echo "Good to go!"; exit 0; fi
       shell: bash
