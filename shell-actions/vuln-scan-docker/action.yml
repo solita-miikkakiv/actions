@@ -24,7 +24,7 @@ inputs:
     default: vuln-full-scan-report
     required: false
   fail_on_alert:
-    default: false
+    default: true
     required: false
 runs:
   using: composite
