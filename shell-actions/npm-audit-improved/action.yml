@@ -4,17 +4,15 @@ description: |
 runs:
   using: composite
   steps:
-    - name: NPM audit to file and run python script
+    - name: Run audit and always exit with code 0
       run: |
-        echo 0
         /usr/bin/touch audit.json
-        echo 1
         /usr/bin/chmod a+rw audit.json
-        echo 2
-        npm audit --dry-run --json
-        echo 3
-        cat audit.json
-        echo 4
+        npm audit --dry-run --json > audit.json
+        exit 0
+      shell: bash
+    - name: Run python script
+      run: |
         python ${{ github.action_path }}/audit-resolver.py
       shell: bash
       working-directory: ${{ github.workspace }}
