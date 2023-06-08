@@ -7,7 +7,10 @@ runs:
     - name: NPM audit to file and run python script
       run: |
         npm audit --dry-run --json > audit.json
-        python3 ./audit-resolver.py
+        ls
+        pwd
+        cat audit.json
+        python ./audit-resolver.py
       shell: bash
     
 
