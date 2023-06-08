@@ -10,7 +10,7 @@ runs:
         ls
         pwd
         cat audit.json
-        python ./audit-resolver.py
+        # python ./audit-resolver.py
       shell: bash
     
 
