@@ -11,9 +11,13 @@ runs:
         if npm audit --json > ${{ github.action_path}}/audit.json; then
           exit 0
         fi
+        ls
+        ls ${{ github.action_path }}
       shell: bash
     - name: Run python script
       run: |
+        ls
+        ls ${{ github.action_path }}
         python ${{ github.action_path }}/audit-resolver.py
       shell: bash
       working-directory: ${{ github.workspace }}
