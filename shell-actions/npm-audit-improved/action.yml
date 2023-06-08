@@ -10,8 +10,6 @@ runs:
         /usr/bin/chmod a+rw ${{ github.action_path}}/audit.json
         if npm audit --json > ${{ github.action_path}}/audit.json; then
           exit 0
-        else
-          exit $EXIT_CODE
         fi
       shell: bash
     - name: Run python script
