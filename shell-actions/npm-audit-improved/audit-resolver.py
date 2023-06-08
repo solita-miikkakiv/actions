@@ -40,7 +40,6 @@ def print_summary(vulns, ignored):
 
     if len(ignored) > 0:
         for i in ignored:
-            print(i)
             try:
                 expires = datetime.datetime.fromtimestamp(int(i["expires"]) / 1000).strftime('%Y-%m-%d %H:%M:%S')
             except:
@@ -90,7 +89,7 @@ if len(not_ignored) > 0:
     exit(1)
 else:
     print('No vulnerabilities found.\n')
-    print_summary(not_ignored, ignore_list)
+    print_summary(not_ignored, ignore_info)
     print(f"Total vulnerabilities: {len(vulns)} ({len(ignore_info)} ignored)")
     exit(0)
 
