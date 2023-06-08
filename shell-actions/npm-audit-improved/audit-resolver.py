@@ -40,7 +40,7 @@ def print_summary(vulns, ignored):
         except:
             expires = "never"
         # print(f"(IGNORED: expires {expires}) {i['via'][0]['name']} {i['range']}")
-        print(f"(IGNORED: expires {expires}) {i['via'][0]['name']}")
+        print(f"(IGNORED: expires {expires}) {i['range']}")
         print(f"Severity: {i['severity']}")
         print(f"{i['via'][0]['title']} {i['via'][0]['url']}")
         print(f"Fix available: {str(i['fixAvailable'] != False)}")
