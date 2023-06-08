@@ -6,6 +6,7 @@ runs:
   steps:
     - name: NPM audit to file and run python script
       run: |
+        ls
         npm audit --dry-run --json > audit.json
         ls
         pwd
