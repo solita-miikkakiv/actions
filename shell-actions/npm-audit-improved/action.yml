@@ -8,8 +8,12 @@ runs:
       run: |
         /usr/bin/touch audit.json
         /usr/bin/chmod a+rw audit.json
-        npm audit --dry-run --json > audit.json
-        exit 0
+        EXIT_CODE=$(npm audit --json > audit.json)
+        if [ $EXIT_CODE -eq 1 ]; then
+          exit 0
+        else
+          exit $EXIT_CODE
+        fi
       shell: bash
     - name: Run python script
       run: |
