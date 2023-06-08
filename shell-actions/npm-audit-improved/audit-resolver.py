@@ -1,3 +1,4 @@
+from copy import deepcopy
 import json
 import datetime
 import io
@@ -46,9 +47,13 @@ def print_summary(vulns, ignored):
 
 
 f = open('audit.json', 'r').read()
-print(f)
 
-data = json.loads(f)
+try:
+    data = json.loads(f)
+except:
+    # npm produces utf-16 encoded json in some environments
+    f = io.open('audit.json', 'r', encoding="utf-16").read()
+    data = json.loads(f)
 
 vulns = data['vulnerabilities']
 
@@ -56,8 +61,12 @@ vulns_with_source = []
 
 for i in vulns:
     via = vulns[i]['via']
-    if type(via[0]) == dict:
-        vulns_with_source.append(vulns[i])
+    for j in via:
+        if type(j) == dict:
+            vuln_atom = vulns[i]
+            vuln_atom["severity"] = j['severity']
+            vuln_atom["via"] = [j]
+            vulns_with_source.append(deepcopy(vuln_atom))
 
 try:
     ignorefile = open('.npmauditignore', 'r').read()
@@ -70,9 +79,11 @@ not_ignored, ignore_info = compare_ignored(ignore_list, vulns_with_source)
 if len(not_ignored) > 0:
     print('Vulnerabilities found:\n')
     print_summary(not_ignored, ignore_info)
+    print(f"Total vulnerabilities: {len(vulns)} ({len(ignore_info)} ignored)")
     exit(1)
 else:
     print('No vulnerabilities found.\n')
     print_summary(not_ignored, ignore_list)
+    print(f"Total vulnerabilities: {len(vulns)} ({len(ignore_info)} ignored)")
     exit(0)
 
