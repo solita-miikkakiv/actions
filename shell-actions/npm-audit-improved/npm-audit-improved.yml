@@ -1,0 +1,13 @@
+name: NPM audit improved
+description: |
+  Run NPM audit with ignore list
+runs:
+  using: composite
+  steps:
+    - name: NPM audit to file and run python script
+      run: |
+        npm audit --dry-run --json > audit.json
+        python3 ./audit-resolver.py
+      shell: bash
+    
+
