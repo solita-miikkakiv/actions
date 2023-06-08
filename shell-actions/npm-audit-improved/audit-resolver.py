@@ -6,7 +6,9 @@ import io
 def compare_ignored(ignored, found):
     ignored_full = []
     for i in ignored:
-        print(i.split(' '))
+        # handle invalid lines
+        if len(i.split(' ')) < 2:
+            continue
         package = i.split(' ')[0]
         source = i.split(' ')[1]
 
