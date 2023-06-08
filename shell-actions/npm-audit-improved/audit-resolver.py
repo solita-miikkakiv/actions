@@ -40,6 +40,7 @@ def print_summary(vulns, ignored):
 
     if len(ignored) > 0:
         for i in ignored:
+            print(i)
             try:
                 expires = datetime.datetime.fromtimestamp(int(i["expires"]) / 1000).strftime('%Y-%m-%d %H:%M:%S')
             except:
