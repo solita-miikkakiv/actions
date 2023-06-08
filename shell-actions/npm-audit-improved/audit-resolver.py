@@ -45,7 +45,8 @@ def print_summary(vulns, ignored):
         print(f"Effects: {str(i['effects'])}\n")
 
 
-f = io.open('audit.json', 'r', encoding='utf-16').read()
+f = open('audit.json', 'r').read()
+print(f)
 
 data = json.loads(f)
 
