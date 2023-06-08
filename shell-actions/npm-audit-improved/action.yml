@@ -6,6 +6,7 @@ runs:
   steps:
     - name: NPM audit to file and run python script
       run: |
+        npm i --package-lock-only
         /usr/bin/touch audit.json
         /usr/bin/chmod a+rw audit.json
         npm audit --dry-run --json > audit.json
