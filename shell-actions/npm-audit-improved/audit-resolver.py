@@ -35,9 +35,10 @@ def print_summary(vulns, ignored):
         print(f"('{i['via'][0]['name']} {str(i['via'][0]['source'])} <expiration-date-in-millis-optional>' to ignore)\n")
 
     for i in ignored:
-        expires = i["expires"] if i["expires"] else "never"
-        if expires != "never": 
-            expires = datetime.datetime.fromtimestamp(int(expires) / 1000).strftime('%Y-%m-%d %H:%M:%S')
+        try:
+            expires = datetime.datetime.fromtimestamp(int(i["expires"]) / 1000).strftime('%Y-%m-%d %H:%M:%S')
+        except:
+            expires = "never"
         print(f"(IGNORED: expires {expires}) {i['via'][0]['name']} {i['range']}")
         print(f"Severity: {i['severity']}")
         print(f"{i['via'][0]['title']} {i['via'][0]['url']}")
