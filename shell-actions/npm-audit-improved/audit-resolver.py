@@ -42,6 +42,8 @@ def print_summary(vulns, ignored):
         for i in ignored:
             try:
                 expires = datetime.datetime.fromtimestamp(int(i["expires"]) / 1000).strftime('%Y-%m-%d %H:%M:%S')
+                if int(i["expires"]) == 0:
+                    expires = "never"
             except:
                 expires = "never"
             print(f"(IGNORED: expires {expires}) {i['via'][0]['name']} {i['range']}")
