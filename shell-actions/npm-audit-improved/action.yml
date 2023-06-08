@@ -6,18 +6,14 @@ runs:
   steps:
     - name: Run audit and always exit with code 0
       run: |
-        /usr/bin/touch ${{ github.action_path}}/audit.json
-        /usr/bin/chmod a+rw ${{ github.action_path}}/audit.json
-        if npm audit --json > ${{ github.action_path}}/audit.json; then
+        /usr/bin/touch audit.json
+        /usr/bin/chmod a+rw audit.json
+        if npm audit --json > audit.json; then
           exit 0
         fi
-        ls
-        ls ${{ github.action_path }}
       shell: bash
     - name: Run python script
       run: |
-        ls
-        ls ${{ github.action_path }}
         python ${{ github.action_path }}/audit-resolver.py
       shell: bash
       working-directory: ${{ github.workspace }}
