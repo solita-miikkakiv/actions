@@ -11,7 +11,7 @@ runs:
         echo 1
         /usr/bin/chmod a+rw audit.json
         echo 2
-        npm audit --dry-run --json > audit.json
+        npm audit --dry-run --json
         echo 3
         cat audit.json
         echo 4
