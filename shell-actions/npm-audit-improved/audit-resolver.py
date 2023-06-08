@@ -1,5 +1,6 @@
 import json
 import datetime
+import io
 
 def compare_ignored(ignored, found):
     ignored_full = []
@@ -44,11 +45,7 @@ def print_summary(vulns, ignored):
         print(f"Effects: {str(i['effects'])}\n")
 
 
-f = open('audit.json', 'r').read()
-if f[0] != '{':
-    f = '{' + f.split('{', 1)[1]
-
-f = f.replace("\n", "")
+f = io.open('audit.json', 'r', encoding='utf-16').read()
 
 data = json.loads(f)
 
@@ -61,8 +58,11 @@ for i in vulns:
     if type(via[0]) == dict:
         vulns_with_source.append(vulns[i])
 
-ignorefile = open('.npmauditignore', 'r').read()
-ignore_list = ignorefile.split('\n')
+try:
+    ignorefile = open('.npmauditignore', 'r').read()
+    ignore_list = ignorefile.split('\n')
+except:
+    ignore_list = []
 
 not_ignored, ignore_info = compare_ignored(ignore_list, vulns_with_source)
 

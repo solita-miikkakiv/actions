@@ -6,12 +6,11 @@ runs:
   steps:
     - name: NPM audit to file and run python script
       run: |
-        ls
+        /usr/bin/touch audit.json
+        /usr/bin/chmod a+rw audit.json
         npm audit --dry-run --json > audit.json
-        ls
-        pwd
-        cat audit.json
-        # python ./audit-resolver.py
+        python ${{ github.action_path }}/audit-resolver.py
       shell: bash
+      working-directory: ${{ github.action_path }}
     
 
