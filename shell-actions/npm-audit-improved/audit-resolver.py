@@ -28,26 +28,28 @@ def compare_ignored(ignored, found):
     return found, ignored_full
 
 def print_summary(vulns, ignored):
-    for i in vulns:
-        print(f"{i['via'][0]['name']} {i['range']}")
-        print(f"Severity: {i['severity']}")
-        print(f"{i['via'][0]['title']} {i['via'][0]['url']}")
-        print(f"Fix available: {str(i['fixAvailable'] != False)}")
-        print(i['nodes'])
-        print(f"Effects: {str(i['effects'])}\n")
-        print(f"('{i['via'][0]['name']} {str(i['via'][0]['source'])} <expiration-date-in-millis-optional>' to ignore)\n")
+    if len(vulns) > 0:
+        for i in vulns:
+            print(f"{i['via'][0]['name']} {i['range']}")
+            print(f"Severity: {i['severity']}")
+            print(f"{i['via'][0]['title']} {i['via'][0]['url']}")
+            print(f"Fix available: {str(i['fixAvailable'] != False)}")
+            print(i['nodes'])
+            print(f"Effects: {str(i['effects'])}\n")
+            print(f"('{i['via'][0]['name']} {str(i['via'][0]['source'])} <expiration-date-in-millis-optional>' to ignore)\n")
 
-    for i in ignored:
-        try:
-            expires = datetime.datetime.fromtimestamp(int(i["expires"]) / 1000).strftime('%Y-%m-%d %H:%M:%S')
-        except:
-            expires = "never"
-        print(f"(IGNORED: expires {expires}) {i['via'][0]['name']} {i['range']}")
-        print(f"Severity: {i['severity']}")
-        print(f"{i['via'][0]['title']} {i['via'][0]['url']}")
-        print(f"Fix available: {str(i['fixAvailable'] != False)}")
-        print(i['nodes'])
-        print(f"Effects: {str(i['effects'])}\n")
+    if len(ignored) > 0:
+        for i in ignored:
+            try:
+                expires = datetime.datetime.fromtimestamp(int(i["expires"]) / 1000).strftime('%Y-%m-%d %H:%M:%S')
+            except:
+                expires = "never"
+            print(f"(IGNORED: expires {expires}) {i['via'][0]['name']} {i['range']}")
+            print(f"Severity: {i['severity']}")
+            print(f"{i['via'][0]['title']} {i['via'][0]['url']}")
+            print(f"Fix available: {str(i['fixAvailable'] != False)}")
+            print(i['nodes'])
+            print(f"Effects: {str(i['effects'])}\n")
 
 
 f = open('audit.json', 'r').read()
