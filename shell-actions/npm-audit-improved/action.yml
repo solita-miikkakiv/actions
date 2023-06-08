@@ -10,6 +10,7 @@ runs:
         /usr/bin/touch audit.json
         /usr/bin/chmod a+rw audit.json
         npm audit --dry-run --json > audit.json
+        cat audit.json
         python ${{ github.action_path }}/audit-resolver.py
       shell: bash
       working-directory: ${{ github.workspace }}
