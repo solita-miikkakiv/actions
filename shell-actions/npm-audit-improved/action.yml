@@ -6,8 +6,6 @@ runs:
   steps:
     - name: Run audit and always exit with code 0
       run: |
-        /usr/bin/touch audit.json
-        /usr/bin/chmod a+rw audit.json
         if npm audit --json > audit.json; then
           exit 0
         fi
