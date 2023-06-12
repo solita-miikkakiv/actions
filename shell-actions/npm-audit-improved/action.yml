@@ -12,7 +12,7 @@ runs:
       shell: bash
     - name: Run python script
       run: |
-        python ${{ github.action_path }}/audit-resolver.py
+        python ${{ github.action_path }}/scripts/audit-resolver.py
       shell: bash
       working-directory: ${{ github.workspace }}
     

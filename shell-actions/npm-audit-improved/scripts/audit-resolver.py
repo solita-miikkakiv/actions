@@ -14,7 +14,7 @@ def compare_ignored(ignored, found):
 
         try:
             expires = i.split(' ')[2]
-            current_time = datetime.datetime.now().timestamp() * 1000
+            current_time = datetime.datetime.now().timestamp()
             if int(expires) < int(current_time):
                 continue
         except:
@@ -36,12 +36,12 @@ def print_summary(vulns, ignored):
             print(f"Fix available: {str(i['fixAvailable'] != False)}")
             print(i['nodes'])
             print(f"Effects: {str(i['effects'])}\n")
-            print(f"('{i['via'][0]['name']} {str(i['via'][0]['source'])} <expiration-date-in-millis-optional>' to ignore)\n")
+            print(f"('{i['via'][0]['name']} {str(i['via'][0]['source'])} <expiration-date-in-seconds-optional>' to ignore)\n")
 
     if len(ignored) > 0:
         for i in ignored:
             try:
-                expires = datetime.datetime.fromtimestamp(int(i["expires"]) / 1000).strftime('%Y-%m-%d %H:%M:%S')
+                expires = datetime.datetime.fromtimestamp(int(i["expires"])).strftime('%Y-%m-%d %H:%M:%S')
                 if int(i["expires"]) == 0:
                     expires = "never"
             except:
@@ -87,11 +87,10 @@ not_ignored, ignore_info = compare_ignored(ignore_list, vulns_with_source)
 if len(not_ignored) > 0:
     print('Vulnerabilities found:\n')
     print_summary(not_ignored, ignore_info)
-    print(f"Total vulnerabilities: {len(vulns)} ({len(ignore_info)} ignored)")
+    print(f"Vulnerable packages: {len(vulns)} ({len(ignore_info)} vulnerabilities ignored)")
     exit(1)
 else:
     print('No vulnerabilities found.\n')
     print_summary(not_ignored, ignore_info)
-    print(f"Total vulnerabilities: {len(vulns)} ({len(ignore_info)} ignored)")
+    print(f"Vulnerable packages: {len(vulns)} ({len(ignore_info)} vulnerabilities ignored)")
     exit(0)
-
