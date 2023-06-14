@@ -54,14 +54,17 @@ def print_summary(vulns, ignored):
             print(f"Effects: {str(i['effects'])}\n")
 
 
-f = open('audit.json', 'r').read()
+# f = open('audit.json', 'r').read()
+
+with open('audit.json', 'r') as f:
+    file = f.read()
 
 try:
-    data = json.loads(f)
+    data = json.loads(file)
 except:
     # npm produces utf-16 encoded json in some environments
-    f = io.open('audit.json', 'r', encoding="utf-16").read()
-    data = json.loads(f)
+    file = io.open('audit.json', 'r', encoding="utf-16").read()
+    data = json.loads(file)
 
 vulns = data['vulnerabilities']
 
