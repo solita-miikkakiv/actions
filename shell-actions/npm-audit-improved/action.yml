@@ -1,6 +1,11 @@
 name: NPM audit improved
 description: |
   Run NPM audit with ignore list
+inputs:
+  working-directory:
+    description: The working directory to run the audit in
+    required: false
+    default: ${{ github.workspace }}
 runs:
   using: composite
   steps:
@@ -10,10 +15,11 @@ runs:
           exit 0
         fi
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
     - name: Run python script
       run: |
         python ${{ github.action_path }}/scripts/audit-resolver.py
       shell: bash
-      working-directory: ${{ github.workspace }}
+      working-directory: ${{ inputs.working-directory }}
     
 
