@@ -78,15 +78,12 @@ for i in vulns:
             vuln_atom["via"] = [j]
             vulns_with_source.append(deepcopy(vuln_atom))
 
-ignore_list = []
-with open('.npmauditignore', 'r') as f:
-    ignorefile = f.read()
-    ignore_list = ignorefile.split('\n')
-# try:
-#     ignorefile = open('.npmauditignore', 'r').read()
-#     ignore_list = ignorefile.split('\n')
-# except:
-#     ignore_list = []
+try:
+    with open('.npmauditignore', 'r') as f:
+        ignorefile = f.read()
+        ignore_list = ignorefile.split('\n')
+except:
+    ignore_list = []
 
 not_ignored, ignore_info = compare_ignored(ignore_list, vulns_with_source)
 
