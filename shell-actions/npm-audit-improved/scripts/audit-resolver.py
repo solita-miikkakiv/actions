@@ -54,8 +54,6 @@ def print_summary(vulns, ignored):
             print(f"Effects: {str(i['effects'])}\n")
 
 
-# f = open('audit.json', 'r').read()
-
 with open('audit.json', 'r') as f:
     file = f.read()
 
@@ -63,7 +61,8 @@ try:
     data = json.loads(file)
 except:
     # npm produces utf-16 encoded json in some environments
-    file = io.open('audit.json', 'r', encoding="utf-16").read()
+    with io.open('audit.json', 'r', encoding="utf-16") as f:
+        file = f.read()
     data = json.loads(file)
 
 vulns = data['vulnerabilities']
@@ -79,11 +78,15 @@ for i in vulns:
             vuln_atom["via"] = [j]
             vulns_with_source.append(deepcopy(vuln_atom))
 
-try:
-    ignorefile = open('.npmauditignore', 'r').read()
+ignore_list = []
+with open('.npmauditignore', 'r') as f:
+    ignorefile = f.read()
     ignore_list = ignorefile.split('\n')
-except:
-    ignore_list = []
+# try:
+#     ignorefile = open('.npmauditignore', 'r').read()
+#     ignore_list = ignorefile.split('\n')
+# except:
+#     ignore_list = []
 
 not_ignored, ignore_info = compare_ignored(ignore_list, vulns_with_source)
 
@@ -97,3 +100,4 @@ else:
     print_summary(not_ignored, ignore_info)
     print(f"Vulnerable packages: {len(vulns)} ({len(ignore_info)} vulnerabilities ignored)")
     exit(0)
+
