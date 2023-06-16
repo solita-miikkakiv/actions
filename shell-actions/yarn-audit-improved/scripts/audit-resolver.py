@@ -66,7 +66,6 @@ with open('audit.json', 'r') as f:
 
 file = file.replace('}{', '},{')
 file = file.replace('}\n{', '},\n{')
-print('[' + file + ']')
 data = json.loads('[' + file + ']')
 
 vulns = getAdvisories(data)
