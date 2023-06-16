@@ -1,0 +1,23 @@
+name: Yarn audit improved
+description: |
+  Run yarn audit with ignore list
+inputs:
+  working-directory:
+    description: The working directory to run the audit in
+    required: false
+    default: ${{ github.workspace }}
+runs:
+  using: composite
+  steps:
+    - name: Run audit and always exit with code 0
+      run: |
+        if yarn audit --json > audit.json; then
+          exit 0
+        fi
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+    - name: Run python script
+      run: |
+        python ${{ github.action_path }}/scripts/audit-resolver.py
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
