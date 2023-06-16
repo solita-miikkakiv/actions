@@ -63,9 +63,9 @@ def print_summary(vulns, ignored):
 with open('audit.json', 'r') as f:
     file = f.read()
 
-print('[' + file + ']')
 
 file = file.replace('}{', '},{')
+print('[' + file + ']')
 data = json.loads('[' + file + ']')
 
 vulns = getAdvisories(data)
