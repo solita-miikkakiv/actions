@@ -12,16 +12,16 @@ runs:
     - name: Check yarn version
       id: version_check
       run: |
-        echo "::set-output name=yarn_version::true"
+        echo "classic_yarn=false" >> $GITHUB_ENV
         yarn_version=$(yarn --version)
         echo "Yarn version: $yarn_version"
         if [[ "$(printf '%s\n' "2.0.0" "$yarn_version" | sort -V | head -n1)" != "2.0.0" ]]; then
-          echo "::set-output name=classic_yarn::false"
+          echo "classic_yarn=true" >> $GITHUB_ENV
         fi
       shell: bash
 
     - name: Run audit and always exit with code 0
-      if: ${{steps.version_check.outputs.classic_yarn == 'true'}}
+      if: ${{env.classic_yarn == 'true'}}
       run: |
         echo "Classic yarn detected"
         if yarn audit --json > audit.json; then
@@ -31,7 +31,7 @@ runs:
       working-directory: ${{ inputs.working-directory }}
 
     - name: Run audit and always exit with code 0
-      if: ${{steps.version_check.outputs.classic_yarn == 'false'}}
+      if: ${{env.classic_yarn == 'false'}}
       run: |
         echo "Yarn 2 or greater detected"
         if yarn npm audit --json > audit.json; then
