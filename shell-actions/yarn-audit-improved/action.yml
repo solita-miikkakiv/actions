@@ -17,6 +17,7 @@ runs:
         if [[ "$(printf '%s\n' "2.0.0" "$yarn_version" | sort -V | head -n1)" != "2.0.0" ]]; then
           echo "::set-output name=classic_yarn::false"
         fi
+      shell: bash
 
     - name: Run audit and always exit with code 0
       if: ${{steps.version_check.outputs.classic_yarn == 'true'}}
