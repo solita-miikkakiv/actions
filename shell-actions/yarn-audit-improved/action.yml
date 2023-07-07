@@ -9,15 +9,31 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Run audit and always exit with code 0
+    - name: Check yarn version
+      id: version_check
       run: |
+        echo "::set-output name=yarn_version::true"
+        yarn_version=$(yarn --version)
+        if [[ "$(printf '%s\n' "2.0.0" "$yarn_version" | sort -V | head -n1)" != "2.0.0" ]]; then
+          echo "::set-output name=classic_yarn::false"
+        fi
+
+    - name: Run audit and always exit with code 0
+      if: ${{steps.version_check.outputs.classic_yarn == 'true'}}
+      run: |
+        echo "Classic yarn detected"
         if yarn audit --json > audit.json; then
-          exit 0
+          python ${{ github.action_path }}/scripts/audit-resolver.py
         fi
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-    - name: Run python script
+
+    - name: Run audit and always exit with code 0
+      if: ${{steps.version_check.outputs.classic_yarn == 'false'}}
       run: |
-        python ${{ github.action_path }}/scripts/audit-resolver.py
+        echo "Yarn 2 or greater detected"
+        if yarn npm audit --json > audit.json; then
+          python ${{ github.action_path }}/scripts/audit-resolver.py
+        fi
       shell: bash
       working-directory: ${{ inputs.working-directory }}
