@@ -38,6 +38,6 @@ runs:
         if yarn npm audit --json > audit.json; then
           echo "Audit succeeded"
         fi
-        python ${{ github.action_path }}/scripts/audit-resolver.py
+        python ${{ github.action_path }}/scripts/audit-resolver-berry.py
       shell: bash
       working-directory: ${{ inputs.working-directory }}
