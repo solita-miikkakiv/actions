@@ -25,8 +25,9 @@ runs:
       run: |
         echo "Classic yarn detected"
         if yarn audit --json > audit.json; then
-          python ${{ github.action_path }}/scripts/audit-resolver.py
+          echo "Audit succeeded"
         fi
+        python ${{ github.action_path }}/scripts/audit-resolver.py
       shell: bash
       working-directory: ${{ inputs.working-directory }}
 
@@ -35,7 +36,8 @@ runs:
       run: |
         echo "Yarn 2 or greater detected"
         if yarn npm audit --json > audit.json; then
-          python ${{ github.action_path }}/scripts/audit-resolver.py
+          echo "Audit succeeded"
         fi
+        python ${{ github.action_path }}/scripts/audit-resolver.py
       shell: bash
       working-directory: ${{ inputs.working-directory }}
